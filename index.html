@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IGP — Navy Version</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+
+    :root {
+      --ivory:      #F8F5EE;
+      --beige:      #EDE8DC;
+      --sand:       #D9D0BE;
+      --charcoal:   #1C1C1C;
+      --warm-black: #0D0D0D;
+      --accent:     #1B3A5C;
+      --accent-lt:  #4A7FA5;
+
+      /* ── 4 font colours only ── */
+      --f-primary:  #1C1C1C;   /* primary on light */
+      --f-secondary:#6B6355;   /* secondary on light */
+      --f-on-dark:  #F8F5EE;   /* primary on dark */
+      --f-dim:      #888888;   /* secondary on dark */
+
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'Inter', system-ui, sans-serif;
+      --body:  'Lora', Georgia, serif;
+    }
+
+    *, @page { size: A4 landscape; margin: 0; }\n    @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }\n    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--ivory);
+      color: var(--f-primary);
+      font-family: var(--body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── GLOBAL THREAD ─────────────────────────
+       Every section starts with the same marker.
+       This is the visual spine of the document.
+    ──────────────────────────────────────────── */
+    .sec-marker {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 52px;
+    }
+    .sec-marker-line {
+      width: 36px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .sec-marker-text {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .sec-marker-light .sec-marker-text { color: var(--accent-lt); }
+    .sec-marker-light .sec-marker-line  { background: var(--accent-lt); }
+    .sec-marker-muted .sec-marker-text { color: var(--f-secondary); }
+    .sec-marker-muted .sec-marker-line  { background: var(--sand); }
+
+    /* ─── TYPOGRAPHY ──────────────────────────── */
+    .t-display {
+      font-family: var(--serif);
+      font-size: clamp(56px, 7vw, 96px);
+      font-weight: 300;
+      line-height: 0.97;
+      letter-spacing: -2px;
+      color: var(--f-primary);
+    }
+    .t-display em { font-style: italic; color: var(--accent); }
+
+    .t-headline {
+      font-family: var(--serif);
+      font-size: clamp(36px, 4.5vw, 58px);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--f-primary);
+    }
+    .t-headline-light { color: var(--f-on-dark); }
+
+    .t-subhead {
+      font-family: var(--serif);
+      font-size: clamp(22px, 2.5vw, 32px);
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--f-primary);
+    }
+
+    .t-large-italic {
+      font-family: var(--serif);
+      font-size: clamp(20px, 2.2vw, 28px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--f-primary);
+    }
+
+    .t-body {
+      font-family: var(--body);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.9;
+      color: var(--f-primary);
+    }
+    .t-body-sand { color: var(--f-dim); }
+    .t-body-muted { color: var(--f-secondary); }
+
+    .t-caption {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      color: var(--f-secondary);
+    }
+
+    /* ─── LAYOUT ATOMS ───────────────────────── */
+    .page-pad  { padding: 120px 88px; }
+    .page-pad-sm { padding: 80px 88px; }
+
+    .narrow { max-width: 600px; }
+    .mid    { max-width: 780px; }
+    .full   { max-width: 1080px; margin: 0 auto; }
+
+    .rule-gold { width: 48px; height: 1px; background: var(--accent); }
+
+    /* ─── COVER ──────────────────────────────── */
+    .cover {
+      min-height: 100vh;
+      background: var(--ivory);
+      padding: 60px 88px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+    .cover::after {
+      content: 'IGP';
+      position: absolute;
+      bottom: -60px; right: -30px;
+      font-family: var(--serif);
+      font-size: 480px;
+      font-weight: 600;
+      color: var(--sand);
+      opacity: 0.08;
+      line-height: 1;
+      letter-spacing: -16px;
+      pointer-events: none;
+    }
+    .cover-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+    .wordmark {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--f-primary);
+    }
+    .cover-body {
+      position: relative;
+      z-index: 1;
+    }
+    .cover-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      position: relative;
+      z-index: 1;
+    }
+    .cover-pillars {
+      display: flex;
+      gap: 32px;
+    }
+    .cover-pillar {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 1px;
+      color: var(--f-secondary);
+    }
+    .cover-tagline {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--f-secondary);
+      margin-top: 20px;
+    }
+
+    /* ─── SECTION BG ─────────────────────────── */
+    .bg-ivory    { background: var(--ivory); color: var(--f-primary); }
+    .bg-beige    { background: var(--beige); color: var(--f-primary); }
+    .bg-charcoal { background: var(--charcoal); color: var(--f-on-dark); }
+    .bg-black    { background: var(--warm-black); color: var(--f-on-dark); }
+    .bg-charcoal * { color: inherit; }
+    .bg-black *    { color: inherit; }
+
+    /* ─── PROBLEM SECTION ────────────────────── */
+    .problem-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 88px;
+      align-items: start;
+    }
+    .problem-aside {
+      background: var(--warm-black);
+      padding: 44px 40px;
+      margin-top: 8px;
+    }
+    .aside-quote {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--f-dim);
+      margin-bottom: 24px;
+    }
+
+    /* ─── PHILOSOPHY ─────────────────────────── */
+    .phil-opening {
+      max-width: 700px;
+      margin-bottom: 72px;
+    }
+    .phil-rows { border-top: 1px solid var(--sand); }
+    .phil-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 72px;
+      padding: 44px 0;
+      border-bottom: 1px solid var(--sand);
+    }
+    .phil-row-label {}
+    .phil-num  { font-family: var(--serif); font-size: 11px; font-style: italic; color: var(--f-secondary); margin-bottom: 8px; }
+    .phil-title { font-family: var(--serif); font-size: 28px; font-weight: 400; color: var(--f-primary); }
+    .phil-body { font-size: 15px; font-weight: 300; line-height: 1.9; color: var(--f-primary); padding-top: 4px; }
+
+    /* ─── STACK DIAGRAM ──────────────────────── */
+    .stack-wrap { margin-top: 64px; border: 1px solid var(--sand); overflow: hidden; }
+    .stack-top {
+      background: var(--warm-black);
+      padding: 22px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .stack-top-title { font-family: var(--serif); font-size: 20px; font-weight: 300; font-style: italic; color: var(--f-on-dark); }
+    .stack-top-note  { font-size: 10px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--f-dim); }
+    .stack-cols { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .stack-col {
+      padding: 32px 20px;
+      border-right: 1px solid var(--beige);
+      background: var(--ivory);
+    }
+    .stack-col:last-child { border-right: none; }
+    .stack-col-n   { font-family: var(--serif); font-size: 32px; font-weight: 300; color: var(--accent-lt); line-height: 1; margin-bottom: 12px; }
+    .stack-col-lbl { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--f-primary); margin-bottom: 8px; }
+    .stack-col-txt { font-size: 12px; font-weight: 300; color: var(--f-secondary); line-height: 1.6; }
+    .stack-bot {
+      background: var(--accent);
+      padding: 18px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .stack-bot-lbl { font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--f-primary); }
+    .stack-bot-tag { font-family: var(--serif); font-size: 16px; font-style: italic; color: #7a5e0a; }
+
+    /* ─── OPERATING MODEL ────────────────────── */
+    .model-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: end;
+      margin-bottom: 72px;
+    }
+    .model-rows { border-top: 1px solid #2a2a2a; }
+    .model-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 64px;
+      padding: 44px 0;
+      border-bottom: 1px solid #2a2a2a;
+      align-items: start;
+    }
+    .model-n, .model-row-num { display: none; }
+    .model-title, .model-row-title { font-family: var(--serif); font-size: 28px; font-weight: 400; color: var(--f-on-dark); padding-top: 4px; }
+    .model-body, .model-row-body  { font-family: var(--body); font-size: 14px; font-weight: 400; line-height: 1.9; color: var(--f-dim); padding-top: 6px; max-width: 480px; }
+
+    /* ─── JOURNEY TIMELINE ───────────────────── */
+    .journey-wrap { padding: 56px 88px 72px; background: var(--warm-black); color: var(--f-on-dark); }
+    .journey-track { width: 100%; height: 1px; background: linear-gradient(to right, var(--accent), rgba(184,151,46,0.1)); margin-bottom: 0; }
+    .journey-stages { display: flex; }
+    .journey-item { flex: 1; padding: 0 52px 0 0; }
+    .journey-item:last-child { padding-right: 0; }
+    .journey-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; margin-bottom: 28px; position: relative; top: -4px; }
+    .journey-n    { font-family: var(--serif); font-size: 11px; font-style: italic; color: var(--f-dim); margin-bottom: 8px; }
+    .journey-stage { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 12px; line-height: 1.5; }
+    .journey-body  { font-size: 13px; font-weight: 300; line-height: 1.75; color: var(--f-dim); }
+
+    /* ─── CAPABILITY BLOCKS ──────────────────── */
+    /* asymmetric grid: 3 cols, fundraising/value tall on right */
+    .cap-blocks {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 3px;
+      background: var(--sand);
+      margin-top: 48px;
+    }
+    .cap-block {
+      padding: 44px 40px;
+      background: var(--ivory);
+    }
+    .cap-block-beige  { background: var(--beige); }
+    .cap-block-dark   { background: var(--charcoal); }
+    .cap-block-tall   { grid-row: 1 / 3; }
+    .cap-block-n {
+      font-family: var(--serif);
+      font-size: 11px;
+      font-style: italic;
+      color: var(--f-secondary);
+      margin-bottom: 6px;
+    }
+    .cap-block-dark .cap-block-n { color: var(--f-dim); }
+    .cap-block-title {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--f-primary);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    .cap-block-dark .cap-block-title { color: var(--f-on-dark); }
+    .cap-block-rule { width: 28px; height: 1px; background: var(--accent); margin-bottom: 20px; }
+    .cap-block-desc {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--f-secondary);
+      margin-bottom: 24px;
+    }
+    .cap-block-dark .cap-block-desc { color: var(--f-dim); }
+    .cap-list { list-style: none; }
+    .cap-list li {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--f-primary);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--beige);
+    }
+    .cap-block-beige .cap-list li  { border-bottom-color: var(--sand); }
+    .cap-block-dark  .cap-list li  { color: var(--f-on-dark); border-bottom-color: #2a2a2a; }
+
+    /* ─── CAPABILITY ROWS (investor alt) ─────── */
+    .cap-rows { border-top: 1px solid var(--sand); }
+    .cap-row {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 72px;
+      padding: 44px 0;
+      border-bottom: 1px solid var(--sand);
+      align-items: start;
+    }
+    .cap-row-dark { background: var(--charcoal); padding: 44px 88px; border: none; }
+    .cap-row-alt { background: var(--beige); }
+    .cap-row-n     { font-family: var(--serif); font-size: 11px; font-style: italic; color: var(--f-secondary); margin-bottom: 6px; }
+    .cap-row-dark .cap-row-n  { color: var(--f-dim); }
+    .cap-row-name  { font-family: var(--serif); font-size: 24px; font-weight: 400; color: var(--f-primary); line-height: 1.2; }
+    .cap-row-dark  .cap-row-name  { color: var(--f-on-dark); }
+    .cap-items-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; }
+    .cap-item {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--f-primary);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--beige);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .cap-item::before { content: ''; width: 14px; height: 1px; background: var(--accent); flex-shrink: 0; margin-top: 8px; }
+    .cap-row-dark  .cap-item { color: var(--f-dim); border-bottom-color: #2a2a2a; }
+    .cap-row-alt   .cap-item { border-bottom-color: var(--f-dim); }
+    .cap-item-full { grid-column: 1 / -1; }
+
+    /* ─── DIFFERENTIATION ────────────────────── */
+    /* ── Why IGP comparison ── */
+    .diff-col-heads {
+      display: grid;
+      grid-template-columns: 160px 1fr 1fr;
+      gap: 0;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--f-primary);
+      margin-bottom: 0;
+    }
+    .diff-col-head {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 0 28px;
+    }
+    .diff-col-head:first-child { padding-left: 0; color: transparent; }
+    .diff-col-head-alt { color: var(--f-secondary); }
+    .diff-col-head-igp { color: var(--accent); border-left: 3px solid var(--accent); padding-left: 24px; }
+
+    .diff-rows { }
+    .diff-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 1fr;
+      gap: 0;
+      padding: 36px 0;
+      border-bottom: 1px solid var(--beige);
+      align-items: start;
+    }
+    .diff-vs {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--f-secondary);
+      padding-top: 4px;
+    }
+    .diff-alt {
+      padding: 0 28px;
+      border-left: 1px solid var(--beige);
+    }
+    .diff-alt-text {
+      font-family: var(--body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: #AAAAAA;
+      font-style: italic;
+    }
+    .diff-igp {
+      padding: 0 0 0 24px;
+      border-left: 3px solid var(--accent);
+    }
+    .diff-igp-headline {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--f-primary);
+      margin-bottom: 10px;
+    }
+    .diff-igp-body {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--f-secondary);
+    }
+
+    /* ─── VISION BLOCKS ──────────────────────── */
+    .horizon-blocks {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      background: var(--accent);
+      margin-top: 64px;
+    }
+    .horizon-block {
+      padding: 48px 40px;
+      background: #1a1a1a;
+      color: var(--f-on-dark);
+    }
+    .horizon-block:first-child { background: #252525; }
+    .horizon-block:last-child  { background: #111; }
+    .hor-label  { font-size: 10px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 10px; }
+    .hor-title  { font-family: var(--serif); font-size: 32px; font-weight: 300; color: var(--f-on-dark); line-height: 1.1; margin-bottom: 6px; }
+    .hor-period { font-size: 11px; color: var(--f-dim); margin-bottom: 28px; }
+    .hor-items  { list-style: none; }
+    .hor-item {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--f-dim);
+      padding: 9px 0;
+      border-bottom: 1px solid #2a2a2a;
+      display: flex;
+      gap: 10px;
+    }
+    .hor-item::before { content: '→'; color: var(--accent); font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ─── ENGAGEMENT ─────────────────────────── */
+    .eng-rows { border-top: 1px solid var(--sand); }
+    .eng-row {
+      display: grid;
+      grid-template-columns: 220px 1fr 260px;
+      gap: 0;
+      padding: 44px 0;
+      border-bottom: 1px solid var(--sand);
+      align-items: start;
+    }
+    .eng-name     { font-family: var(--serif); font-size: 22px; font-weight: 400; color: var(--f-primary); margin-bottom: 4px; }
+    .eng-duration { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+    .eng-body     { font-size: 14px; font-weight: 300; line-height: 1.85; color: var(--f-primary); padding: 0 48px; border-left: 1px solid var(--sand); border-right: 1px solid var(--sand); }
+    .eng-note     { font-size: 13px; font-weight: 300; font-style: italic; color: var(--f-secondary); line-height: 1.7; padding-left: 36px; }
+
+    /* ─── ABOUT ──────────────────────────────── */
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 96px;
+      align-items: start;
+    }
+    .about-name  { font-family: var(--serif); font-size: clamp(56px, 7vw, 88px); font-weight: 300; color: var(--f-primary); line-height: 1; margin-bottom: 8px; }
+    .about-role  { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 36px; }
+    .about-quote {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--f-primary);
+      border-left: 2px solid var(--accent);
+      padding-left: 24px;
+      margin-bottom: 40px;
+    }
+    .about-attrs { list-style: none; }
+    .about-attr  { padding: 14px 0; border-bottom: 1px solid var(--beige); }
+    .about-attr-lbl { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--f-secondary); margin-bottom: 4px; }
+    .about-attr-val { font-size: 14px; font-weight: 300; color: var(--f-primary); }
+
+    /* ─── CTA ────────────────────────────────── */
+    .cta-inner  { max-width: 620px; }
+    .cta-head   { font-family: var(--serif); font-size: clamp(40px, 5vw, 68px); font-weight: 300; color: var(--f-on-dark); line-height: 1.1; margin-bottom: 24px; }
+    .cta-sub    { font-size: 15px; font-weight: 300; color: var(--f-dim); line-height: 1.85; margin-bottom: 52px; max-width: 480px; }
+    .cta-email  { font-family: var(--serif); font-size: 26px; font-weight: 300; color: var(--accent-lt); margin-bottom: 6px; }
+    .cta-note   { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--f-dim); }
+
+    /* ─── FOOTER ─────────────────────────────── */
+    .doc-footer {
+      background: var(--warm-black);
+      padding: 20px 88px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #1a1a1a;
+    }
+    .footer-mark { font-family: var(--serif); font-size: 12px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--f-dim); }
+    .footer-meta { font-size: 11px; letter-spacing: 1px; color: var(--f-dim); }
+
+  </style>
+</head>
+<body>
+
+
+<!-- ══════ COVER ══════ -->
+<div class="cover">
+
+  <div class="cover-nav">
+    <div class="wordmark">I · G · P</div>
+    <div style="text-align:right;">
+      <p style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--f-secondary);">Intelliquity Growth Partners</p>
+      <p style="font-size:10px;letter-spacing:1.5px;color:var(--f-secondary);margin-top:4px;">Confidential</p>
+    </div>
+  </div>
+
+  <div class="cover-body">
+    <h1 class="t-display">The<br><em>integrated</em><br>operating<br>partner.</h1>
+    <p class="cover-tagline">The connective tissue of your business.</p>
+  </div>
+
+  <div class="cover-foot">
+    <div class="cover-pillars">
+      <span class="cover-pillar">Strategy</span>
+      <span class="cover-pillar">Finance</span>
+      <span class="cover-pillar">Growth</span>
+      <span class="cover-pillar">Operations</span>
+      <span class="cover-pillar">Fundraising</span>
+    </div>
+    <p style="font-size:11px;letter-spacing:2px;color:var(--sand);">2026</p>
+  </div>
+
+</div>
+
+
+<!-- ══════ 01 — THE PROBLEM ══════ -->
+<section class="bg-ivory page-pad">
+  <div class="full">
+    <div class="sec-marker">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">01 — The Problem</span>
+    </div>
+    <div class="problem-layout">
+      <div>
+        <h2 class="t-headline" style="margin-bottom:36px; max-width:560px;">The startup ecosystem has an advice surplus and an integration deficit.</h2>
+        <p class="t-body narrow" style="margin-bottom:20px;">There are strategists, finance advisors, growth consultants, operations specialists, and fundraising coaches. For every problem a founder faces, there is a specialist who has seen it before.</p>
+        <p class="t-body narrow" style="margin-bottom:20px;">The problem is not the absence of expertise. The problem is that these experts work in isolation — and business problems do not. A flawed financial model is often a symptom of an unclear strategy. A broken GTM is often a symptom of misunderstood unit economics.</p>
+        <p class="t-body narrow">When founders work with specialists who do not talk to each other, they solve parts of the problem while the whole problem persists. More deliverables. Less progress.</p>
+      </div>
+      <div class="problem-aside">
+        <p class="aside-quote">"Founders don't have a strategy problem. They have a business — and a business is a system."</p>
+        <div class="rule-gold" style="margin-bottom:16px;"></div>
+        <p class="t-caption" style="color:var(--accent-lt);letter-spacing:2px;">The IGP Thesis</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ 02 — PHILOSOPHY ══════ -->
+<section class="bg-beige page-pad">
+  <div class="full">
+    <div class="sec-marker">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">02 — The Philosophy</span>
+    </div>
+    <div class="phil-opening">
+      <p class="t-large-italic">The business is not the sum of its functions. It is the product of how they interact.</p>
+    </div>
+    <div class="phil-rows">
+      <div class="phil-row">
+        <div><div class="phil-num">Principle 01</div><div class="phil-title">Integration</div></div>
+        <p class="phil-body">Business problems do not live in silos. Neither do we. We work across strategy, finance, growth, and operations simultaneously — because that is how real decisions get made. Not five separate workstreams handed to five separate people. One connected system, one integrated partner.</p>
+      </div>
+      <div class="phil-row">
+        <div><div class="phil-num">Principle 02</div><div class="phil-title">Execution</div></div>
+        <p class="phil-body">We do not hand you a deck and leave. Every engagement is measured by what changed in the business — not what was recommended in a report. The work ends when the business is different. That is the only accountability standard we hold ourselves to.</p>
+      </div>
+      <div class="phil-row">
+        <div><div class="phil-num">Principle 03</div><div class="phil-title">Intelligence</div></div>
+        <p class="phil-body">Every decision we make starts with rigorous analysis. We are operators who think like investors — precise, evidence-based, and acutely aware of the downstream effects of every choice. Instinct is not a strategy. Data-backed conviction is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ 03 — THE FRAMEWORK ══════ -->
+<section class="bg-ivory page-pad">
+  <div class="full">
+    <div class="sec-marker">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">03 — The Framework</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:end;margin-bottom:0;">
+      <div>
+        <h2 class="t-headline" style="margin-bottom:20px;">How the business actually works.</h2>
+        <p class="t-body" style="max-width:480px;">Every function feeds into outcomes. The integration layer is what makes them work together instead of competing. IGP occupies that layer — the connective tissue between strategy, finance, growth, operations, and fundraising.</p>
+      </div>
+      <p class="t-large-italic t-body-muted" style="max-width:360px;">"Most advisors occupy one column. IGP occupies the layer that connects all of them."</p>
+    </div>
+    <div class="stack-wrap">
+      <div class="stack-top">
+        <span class="stack-top-title">Business Outcomes</span>
+        <span class="stack-top-note">Where everything converges</span>
+      </div>
+      <div class="stack-cols">
+        <div class="stack-col">
+          <div class="stack-col-n">01</div>
+          <div class="stack-col-lbl">Strategy</div>
+          <div class="stack-col-txt">Direction, positioning, and decisions that compound</div>
+        </div>
+        <div class="stack-col">
+          <div class="stack-col-n">02</div>
+          <div class="stack-col-lbl">Finance</div>
+          <div class="stack-col-txt">Models, unit economics, financial architecture</div>
+        </div>
+        <div class="stack-col">
+          <div class="stack-col-n">03</div>
+          <div class="stack-col-lbl">Growth</div>
+          <div class="stack-col-txt">GTM, acquisition engines, scalable go-to-market</div>
+        </div>
+        <div class="stack-col">
+          <div class="stack-col-n">04</div>
+          <div class="stack-col-lbl">Operations</div>
+          <div class="stack-col-txt">Systems, processes, execution infrastructure</div>
+        </div>
+        <div class="stack-col">
+          <div class="stack-col-n">05</div>
+          <div class="stack-col-lbl">Fundraising</div>
+          <div class="stack-col-txt">Investor readiness, narrative, capital strategy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ 04 — OPERATING MODEL ══════ -->
+<section class="bg-charcoal">
+  <div class="full">
+    <div class="model-head page-pad" style="padding-bottom:0;">
+      <div>
+        <div class="sec-marker sec-marker-light">
+          <div class="sec-marker-line"></div>
+          <span class="sec-marker-text">04 — How We Work</span>
+        </div>
+        <h2 class="t-headline t-headline-light">Four modes of engagement. Most consultants operate in the first two.</h2>
+      </div>
+      <p class="t-body t-body-sand" style="max-width:400px;padding-top:8px;">IGP is built for the full sequence — diagnosis through to iteration. The engagement doesn't end at the presentation. It ends when the business is different.</p>
+    </div>
+    <div class="model-rows" style="padding:0 88px 88px;">
+      <div class="model-row">
+
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:#F8F5EE;padding-top:4px;">Diagnose</div>
+        <p style="font-family:'Lora',Georgia,serif;font-size:14px;font-weight:400;line-height:1.9;color:#AAAAAA;padding-top:6px;max-width:480px;">Before we recommend anything, we understand the system — not just the symptom. A structured assessment across strategy, finance, operations, market position, and growth. The full picture, before we touch anything.</p>
+      </div>
+      <div class="model-row">
+
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:#F8F5EE;padding-top:4px;">Design</div>
+        <p style="font-family:'Lora',Georgia,serif;font-size:14px;font-weight:400;line-height:1.9;color:#AAAAAA;padding-top:6px;max-width:480px;">We build the integrated plan — strategy and financial model aligned, growth and operations connected. Not five separate plans that will contradict each other in execution. One coherent system everyone can orient around.</p>
+      </div>
+      <div class="model-row">
+
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:#F8F5EE;padding-top:4px;">Deploy</div>
+        <p style="font-family:'Lora',Georgia,serif;font-size:14px;font-weight:400;line-height:1.9;color:#AAAAAA;padding-top:6px;max-width:480px;">We work alongside the founder to execute. Building models, frameworks, processes, and systems — staying until they work. This is where most advisory relationships end. It is where IGP does its most important work.</p>
+      </div>
+      <div class="model-row">
+
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:#F8F5EE;padding-top:4px;">Iterate</div>
+        <p style="font-family:'Lora',Georgia,serif;font-size:14px;font-weight:400;line-height:1.9;color:#AAAAAA;padding-top:6px;max-width:480px;">Business doesn't stop when the engagement delivers. We build measurement and review into every engagement — so what we build keeps working as the business evolves and assumptions are tested against reality.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ 05 — FOUNDER PRACTICE ══════ -->
+<section class="bg-ivory" style="padding:72px 88px 52px;">
+  <div class="full">
+    <div class="sec-marker" style="margin-bottom:32px;">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">05 — Founder Practice</span>
+    </div>
+    <div style="display:grid;grid-template-columns:3fr 2fr;gap:72px;align-items:center;">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,40px);font-weight:400;line-height:1.2;color:#1C1C1C;">Most founders have advisors for everything. Almost none have someone who connects all of it.</h2>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;font-weight:300;line-height:1.65;color:#6B6355;">"You don't have five separate problems. You have one interconnected business. That's what we solve."</p>
+    </div>
+  </div>
+</section>
+
+<!-- founder journey — full bleed -->
+<div class="journey-wrap">
+  <div class="full">
+    <div class="sec-marker sec-marker-light" style="margin-bottom:40px;">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">The Founder Journey — where the problems live</span>
+    </div>
+  </div>
+  <div class="journey-track"></div>
+  <div class="journey-stages" style="padding:0 88px;">
+    <div class="journey-item">
+      <div class="journey-dot"></div>
+      <div class="journey-n">Stage 01</div>
+      <div class="journey-stage">Clarity<br>Crisis</div>
+      <p class="journey-body">Business model uncertain. Too many directions. No conviction about what to build or in what order.</p>
+    </div>
+    <div class="journey-item">
+      <div class="journey-dot"></div>
+      <div class="journey-n">Stage 02</div>
+      <div class="journey-stage">Execution<br>Chaos</div>
+      <p class="journey-body">Everyone doing everything. No KPIs, no rhythm. Decisions are reactive. Systems built for 3 people.</p>
+    </div>
+    <div class="journey-item">
+      <div class="journey-dot"></div>
+      <div class="journey-n">Stage 03</div>
+      <div class="journey-stage">Growth<br>Confusion</div>
+      <p class="journey-body">Traction happening but unsustainably. GTM not scaling. Unit economics unclear or quietly broken.</p>
+    </div>
+    <div class="journey-item">
+      <div class="journey-dot"></div>
+      <div class="journey-n">Stage 04</div>
+      <div class="journey-stage">Fundraising<br>Pressure</div>
+      <p class="journey-body">Investors asking questions you can't answer. Story not tight. Model doesn't hold up under scrutiny.</p>
+    </div>
+    <div class="journey-item">
+      <div class="journey-dot"></div>
+      <div class="journey-n">Stage 05</div>
+      <div class="journey-stage">Scale<br>Strain</div>
+      <p class="journey-body">Systems breaking at 20 people. Founders in every decision. Culture and process at war.</p>
+    </div>
+  </div>
+</div>
+
+<!-- founder capabilities -->
+<section class="bg-ivory page-pad-sm">
+  <div class="full">
+    <div class="sec-marker" style="margin-bottom:40px;">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">Founder Capabilities</span>
+    </div>
+    <div class="cap-blocks">
+
+      <!-- Strategic Clarity — large, top left -->
+      <div class="cap-block">
+        <div class="cap-block-n">01</div>
+        <div class="cap-block-title">Strategic Clarity</div>
+        <div class="cap-block-rule"></div>
+        <p class="cap-block-desc">Direction, market understanding, and the foundational decisions that determine whether the business is building toward the right thing.</p>
+        <ul class="cap-list">
+          <li>Market Research &amp; Sizing</li>
+          <li>Competitive Analysis</li>
+          <li>GTM Strategy</li>
+          <li>Business Planning &amp; Validation</li>
+          <li>PMF Assessment</li>
+          <li>Strategic Planning</li>
+        </ul>
+      </div>
+
+      <!-- Financial Architecture — top middle -->
+      <div class="cap-block cap-block-beige">
+        <div class="cap-block-n">02</div>
+        <div class="cap-block-title">Financial Architecture</div>
+        <div class="cap-block-rule"></div>
+        <p class="cap-block-desc">The financial infrastructure of the business — models that reflect reality, economics that hold up, and metrics that drive decisions rather than decorate reports.</p>
+        <ul class="cap-list">
+          <li>Financial Modelling &amp; Valuation</li>
+          <li>Unit Economics</li>
+          <li>Budgeting &amp; Planning</li>
+          <li>KPI Framework Design</li>
+          <li>Dashboard Design</li>
+          <li>Risk Analysis</li>
+        </ul>
+      </div>
+
+      <!-- Fundraising — tall, spans both rows, dark -->
+      <div class="cap-block cap-block-dark cap-block-tall" style="color:#F8F5EE;display:flex;flex-direction:column;">
+        <div class="cap-block-n" style="color:#888;">05</div>
+        <div class="cap-block-title" style="color:#F8F5EE;font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin-bottom:20px;">Fundraising Readiness</div>
+        <div class="cap-block-rule"></div>
+        <p class="cap-block-desc" style="color:#888;font-family:'Lora',serif;font-size:13px;line-height:1.75;margin-bottom:24px;">Getting the business investor-ready before the round opens — not two weeks before close. Story, model, metrics, and narrative all aligned to survive scrutiny.</p>
+        <ul class="cap-list">
+          <li style="color:#CCCCCC;border-bottom:1px solid #2a2a2a;padding:9px 0;">Investor Readiness Assessment</li>
+          <li style="color:#CCCCCC;border-bottom:1px solid #2a2a2a;padding:9px 0;">Pitch Deck Strategy</li>
+          <li style="color:#CCCCCC;border-bottom:1px solid #2a2a2a;padding:9px 0;">Financial Model Review</li>
+          <li style="color:#CCCCCC;border-bottom:1px solid #2a2a2a;padding:9px 0;">Narrative Development</li>
+          <li style="color:#CCCCCC;border-bottom:none;padding:9px 0;">Due Diligence Preparation</li>
+        </ul>
+        <div style="margin-top:auto;padding-top:48px;">
+          <div style="width:28px;height:1px;background:#1B3A5C;margin-bottom:20px;"></div>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;font-weight:300;color:#666;line-height:1.65;">Fundraising readiness is not a two-week sprint. It is a six-month operating discipline.</p>
+        </div>
+      </div>
+
+      <!-- Growth — bottom left -->
+      <div class="cap-block cap-block-beige">
+        <div class="cap-block-n">03</div>
+        <div class="cap-block-title">Growth</div>
+        <div class="cap-block-rule"></div>
+        <p class="cap-block-desc">GTM strategy and growth architecture built on real market understanding and unit economics that can actually support the cost of acquiring customers.</p>
+        <ul class="cap-list">
+          <li>Growth Strategy</li>
+          <li>Customer Journey Mapping</li>
+        </ul>
+      </div>
+
+      <!-- Operations — bottom middle -->
+      <div class="cap-block">
+        <div class="cap-block-n">04</div>
+        <div class="cap-block-title">Operations</div>
+        <div class="cap-block-rule"></div>
+        <p class="cap-block-desc">The systems, processes, and execution infrastructure that let the business run without the founder in every decision.</p>
+        <ul class="cap-list">
+          <li>Process Design</li>
+          <li>Business Diagnostics</li>
+          <li>Strategic Planning</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ 06 — INVESTOR PRACTICE ══════ -->
+<section class="bg-beige" style="padding:72px 88px 52px;">
+  <div class="full">
+    <div class="sec-marker" style="margin-bottom:32px;">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">06 — Investor Practice</span>
+    </div>
+    <div style="display:grid;grid-template-columns:3fr 2fr;gap:72px;align-items:center;">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,40px);font-weight:400;line-height:1.2;color:#1C1C1C;">Analytical rigour at the fund level. Operating depth at the portfolio level.</h2>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;font-weight:300;line-height:1.65;color:#6B6355;">"Fund intelligence and portfolio operations feeding each other — that is how value compounds across a portfolio."</p>
+    </div>
+  </div>
+</section>
+
+<!-- investor journey — full bleed -->
+<div class="journey-wrap">
+  <div class="full">
+    <div class="sec-marker sec-marker-light" style="margin-bottom:40px;">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">The Investment Lifecycle — where IGP adds value</span>
+    </div>
+  </div>
+  <div class="journey-track"></div>
+  <div class="journey-stages" style="padding:0 88px;">
+    <div class="journey-item">
+      <div class="journey-dot"></div>
+      <div class="journey-n">Stage 01</div>
+      <div class="journey-stage">Thesis &amp;<br>Sourcing</div>
+      <p class="journey-body">Building investment theses, mapping sectors, and identifying opportunity areas before capital is deployed.</p>
+    </div>
+    <div class="journey-item">
+      <div class="journey-dot"></div>
+      <div class="journey-n">Stage 02</div>
+      <div class="journey-stage">Due<br>Diligence</div>
+      <p class="journey-body">Financial analysis, commercial due diligence, market sizing, investment memo preparation.</p>
+    </div>
+    <div class="journey-item">
+      <div class="journey-dot"></div>
+      <div class="journey-n">Stage 03</div>
+      <div class="journey-stage">Portfolio<br>Monitoring</div>
+      <p class="journey-body">Fund analytics, performance reporting, data governance — visibility across the full portfolio.</p>
+    </div>
+    <div class="journey-item">
+      <div class="journey-dot"></div>
+      <div class="journey-n">Stage 04</div>
+      <div class="journey-stage">Value<br>Creation</div>
+      <p class="journey-body">Operating support for portfolio companies — KPIs, strategy, financial models, growth infrastructure.</p>
+    </div>
+    <div class="journey-item">
+      <div class="journey-dot"></div>
+      <div class="journey-n">Stage 05</div>
+      <div class="journey-stage">Exit<br>Preparation</div>
+      <p class="journey-body">Business diagnostics, fundraising readiness, and narrative review ahead of the next round or exit.</p>
+    </div>
+  </div>
+</div>
+
+<!-- investor capabilities -->
+<section class="bg-beige page-pad-sm">
+  <div class="full">
+    <div class="sec-marker" style="margin-bottom:40px;">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">Investor Capabilities</span>
+    </div>
+    <div class="cap-blocks">
+
+      <!-- Research & Intelligence -->
+      <div class="cap-block cap-block-beige">
+        <div class="cap-block-n">01</div>
+        <div class="cap-block-title">Research &amp; Intelligence</div>
+        <div class="cap-block-rule"></div>
+        <p class="cap-block-desc">Deep sector and company research that sharpens investment theses, validates market opportunity, and produces analysis that holds up inside an IC.</p>
+        <ul class="cap-list">
+          <li>Industry &amp; Market Research</li>
+          <li>Market Mapping</li>
+          <li>Investment Research</li>
+          <li>Investment Memos</li>
+        </ul>
+      </div>
+
+      <!-- Fund Analytics -->
+      <div class="cap-block">
+        <div class="cap-block-n">02</div>
+        <div class="cap-block-title">Fund Analytics</div>
+        <div class="cap-block-rule"></div>
+        <p class="cap-block-desc">Portfolio performance infrastructure — dashboards, reporting, and data systems that give the fund clear visibility into what the portfolio is actually doing.</p>
+        <ul class="cap-list">
+          <li>Fund Analytics &amp; Performance Tracking</li>
+          <li>Portfolio Analysis</li>
+          <li>Performance Reporting</li>
+          <li>Ownership Tracking</li>
+          <li>Financial &amp; Commercial Analysis</li>
+        </ul>
+      </div>
+
+      <!-- Value Creation — tall, dark -->
+      <div class="cap-block cap-block-dark cap-block-tall" style="display:flex;flex-direction:column;">
+        <div style="flex:1;">
+          <div class="cap-block-n" style="color:#888;">05</div>
+          <div class="cap-block-title" style="color:#F8F5EE;font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin-bottom:20px;">Value Creation</div>
+          <div class="cap-block-rule"></div>
+          <p class="cap-block-desc" style="color:#888;font-family:'Lora',serif;font-size:13px;line-height:1.75;margin-bottom:24px;">Operating support for portfolio companies — the strategic, financial, and growth infrastructure that converts the investment thesis into measurable business performance.</p>
+          <ul class="cap-list">
+            <li style="color:#CCCCCC;border-bottom:1px solid #2a2a2a;padding:9px 0;">Value Creation Planning</li>
+            <li style="color:#CCCCCC;border-bottom:1px solid #2a2a2a;padding:9px 0;">Financial Modelling &amp; Valuation</li>
+            <li style="color:#CCCCCC;border-bottom:1px solid #2a2a2a;padding:9px 0;">Growth Strategy</li>
+            <li style="color:#CCCCCC;border-bottom:1px solid #2a2a2a;padding:9px 0;">Strategic Planning</li>
+            <li style="color:#CCCCCC;border-bottom:none;padding:9px 0;">Business Diagnostics</li>
+          </ul>
+        </div>
+        <div style="margin-top:auto;padding-top:48px;">
+          <div style="width:28px;height:1px;background:#1B3A5C;margin-bottom:20px;"></div>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;font-weight:300;color:#666;line-height:1.65;">The fund relationship creates the opportunity. IGP creates the execution.</p>
+        </div>
+      </div>
+
+      <!-- Data & Governance -->
+      <div class="cap-block cap-block-beige">
+        <div class="cap-block-n">03</div>
+        <div class="cap-block-title">Data &amp; Governance</div>
+        <div class="cap-block-rule"></div>
+        <p class="cap-block-desc">Clean data in, reliable decisions out. Portfolio data audited, standardised, and structured so the numbers you're working with are actually trustworthy.</p>
+        <ul class="cap-list">
+          <li>Data Quality &amp; Governance</li>
+          <li>Portfolio Reporting Architecture</li>
+        </ul>
+      </div>
+
+      <!-- Portfolio Operations -->
+      <div class="cap-block">
+        <div class="cap-block-n">04</div>
+        <div class="cap-block-title">Portfolio Operations</div>
+        <div class="cap-block-rule"></div>
+        <p class="cap-block-desc">The operating layer between the fund and its companies — KPI systems, strategic planning support, and the reporting infrastructure that keeps both sides aligned.</p>
+        <ul class="cap-list">
+          <li>Portfolio Operations</li>
+          <li>KPI Framework &amp; Tracking</li>
+          <li>Strategic Planning</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ 07 — WHY IGP ══════ -->
+<section class="bg-ivory page-pad">
+  <div class="full">
+    <div class="sec-marker">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">07 — Why IGP</span>
+    </div>
+    <h2 class="t-headline" style="margin-bottom:16px; max-width:540px;">Not an advisor. An integrator.</h2>
+    <p class="t-body narrow" style="margin-bottom:64px;">The market is full of people who will tell you what to do. IGP is for founders and investors who want someone who will do it with them.</p>
+    <div class="diff-col-heads">
+      <div class="diff-col-head">—</div>
+      <div class="diff-col-head diff-col-head-alt">The alternative</div>
+      <div class="diff-col-head diff-col-head-igp">IGP</div>
+    </div>
+    <div class="diff-rows">
+      <div class="diff-row">
+        <div class="diff-vs">vs. Consultant</div>
+        <div class="diff-alt">
+          <p class="diff-alt-text">A report. Functional view. Engagement ends at delivery — often before anything has actually changed. Advice without execution.</p>
+        </div>
+        <div class="diff-igp">
+          <p class="diff-igp-headline">Integrated view. Works until the business changes.</p>
+          <p class="diff-igp-body">The engagement ends when the outcome is real — not when the presentation is done.</p>
+        </div>
+      </div>
+      <div class="diff-row">
+        <div class="diff-vs">vs. Specialist</div>
+        <div class="diff-alt">
+          <p class="diff-alt-text">Deep in one function. Everything outside their lane stays broken. No one sees the system.</p>
+        </div>
+        <div class="diff-igp">
+          <p class="diff-igp-headline">Sees how every function connects to every other.</p>
+          <p class="diff-igp-body">Works across strategy, finance, growth, and operations simultaneously — optimising the system, not just individual parts.</p>
+        </div>
+      </div>
+      <div class="diff-row">
+        <div class="diff-vs">vs. Fractional CXO</div>
+        <div class="diff-alt">
+          <p class="diff-alt-text">Owns one function. Three fractional hires means three people who don't talk to each other — and a founder coordinating all of them.</p>
+        </div>
+        <div class="diff-igp">
+          <p class="diff-igp-headline">One relationship. Multiple functions. Zero coordination overhead.</p>
+          <p class="diff-igp-body">One accountability structure instead of three. The integration happens inside IGP, not on the founder's plate.</p>
+        </div>
+      </div>
+      <div class="diff-row">
+        <div class="diff-vs">vs. Big 4</div>
+        <div class="diff-alt">
+          <p class="diff-alt-text">Expensive. A junior analyst does the work while the senior partner takes the meeting. Optimised for billable hours, not outcomes.</p>
+        </div>
+        <div class="diff-igp">
+          <p class="diff-igp-headline">The person you hired is the person doing the work.</p>
+          <p class="diff-igp-body">Senior, accountable, outcome-focused. Priced for startups — not for Fortune 500 procurement departments.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ 08 — VISION ══════ -->
+<section class="bg-black page-pad">
+  <div class="full">
+    <div class="sec-marker sec-marker-light">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">08 — The Vision</span>
+    </div>
+    <h2 class="t-headline t-headline-light" style="margin-bottom:16px; max-width:580px;">Building towards an ecosystem. Not just a practice.</h2>
+    <p class="t-body t-body-sand narrow" style="margin-bottom:0;">Every engagement, framework, and relationship is building toward something larger. The consulting practice is where IGP starts — not where it ends.</p>
+    <div class="horizon-blocks">
+      <div class="horizon-block">
+        <div class="hor-label">Horizon 01 — Now</div>
+        <div class="hor-title">Consulting Practice</div>
+        <ul class="hor-items">
+          <li class="hor-item">Integrated operating engagements</li>
+          <li class="hor-item">Founder and investor client base</li>
+          <li class="hor-item">Proprietary frameworks and diagnostics</li>
+          <li class="hor-item">Dual fluency — founder + investor side</li>
+        </ul>
+      </div>
+      <div class="horizon-block">
+        <div class="hor-label">Horizon 02 — Building</div>
+        <div class="hor-title">Platform Layer</div>
+        <ul class="hor-items">
+          <li class="hor-item">Network of vetted operators</li>
+          <li class="hor-item">Investor connection infrastructure</li>
+          <li class="hor-item">Proprietary research and intelligence</li>
+          <li class="hor-item">Community and knowledge layer</li>
+        </ul>
+      </div>
+      <div class="horizon-block">
+        <div class="hor-label">Horizon 03 — Vision</div>
+        <div class="hor-title">Ecosystem</div>
+        <ul class="hor-items">
+          <li class="hor-item">Startup registry — any stage, free access</li>
+          <li class="hor-item">Founder–investor matching platform</li>
+          <li class="hor-item">Portfolio management infrastructure</li>
+          <li class="hor-item">Startup operating system</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ 09 — ENGAGEMENT MODEL ══════ -->
+<section class="bg-beige page-pad">
+  <div class="full">
+    <div class="sec-marker">
+      <div class="sec-marker-line"></div>
+      <span class="sec-marker-text">09 — Working With IGP</span>
+    </div>
+    <h2 class="t-headline" style="margin-bottom:16px; max-width:560px;">Three ways to engage. One starting point.</h2>
+    <p class="t-body narrow" style="margin-bottom:64px;">Every engagement begins with a conversation — not a proposal. 30 minutes to understand your business. Then we decide together.</p>
+    <div class="eng-rows">
+      <div class="eng-row">
+        <div><div class="eng-name">Diagnostic Sprint</div><div class="eng-duration">2–3 weeks</div></div>
+        <p class="eng-body">A structured assessment across six dimensions — strategy, finance, market, growth, operations, and investor readiness. Complete clarity on what to fix first and in what order. The right starting point for most engagements.</p>
+        <p class="eng-note">For: new engagements, moments of transition, founders who need orientation before action</p>
+      </div>
+      <div class="eng-row">
+        <div><div class="eng-name">Project</div><div class="eng-duration">Defined scope</div></div>
+        <p class="eng-body">A specific problem, a specific deliverable. Financial model, GTM strategy, fundraising readiness programme, KPI architecture. Clear scope, defined timeline, accountable to a specific outcome.</p>
+        <p class="eng-note">For: high-priority, time-bounded problems with a defined output</p>
+      </div>
+      <div class="eng-row">
+        <div><div class="eng-name">Operating Partner</div><div class="eng-duration">Monthly retainer</div></div>
+        <p class="eng-body">An ongoing partnership — IGP works across multiple functions simultaneously, in real time, as the business evolves. Strategy to finance to growth to fundraising. The full integration model in practice.</p>
+        <p class="eng-note">For: founders scaling fast who need continuous senior operating support</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- ══════ CTA ══════ -->
+<section class="bg-charcoal page-pad">
+  <div class="full">
+    <div class="cta-inner">
+      <h2 class="cta-head">Start with a conversation.</h2>
+      <p class="cta-sub">Before we propose anything, we want to understand your business. That conversation is free, takes 30 minutes, and changes how everything gets done after it.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ FOOTER ══════ -->
+<footer class="doc-footer">
+  <div class="footer-mark">I · G · P</div>
+  <div class="footer-meta">Intelliquity Growth Partners &ensp;·&ensp; Confidential &ensp;·&ensp; 2026</div>
+</footer>
+
+
+</body>
+</html>
