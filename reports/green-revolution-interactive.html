@@ -1,0 +1,676 @@
+<title>Green Revolution's Dark Side</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap">
+
+<style>
+:root {
+  --bg: #FBF5EB;
+  --surface: #FFFCF5;
+  --surface-alt: #F4ECD8;
+  --accent: #C96842;
+  --amber: #D4952A;
+  --sage: #6B9878;
+  --blue: #7A9DB8;
+  --rose: #B86868;
+  --text: #2A1E14;
+  --muted: #7A6458;
+  --border: #E4D8C4;
+  --nav-bg: #3A2A1E;
+  --nav-text: #F4ECD8;
+  --shadow: 0 2px 16px rgba(60,40,20,0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1E1510; --surface: #271C14; --surface-alt: #32221A;
+    --text: #F0E8D8; --muted: #A09080; --border: #3A2A1E;
+    --shadow: 0 2px 16px rgba(0,0,0,0.35);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1E1510; --surface: #271C14; --surface-alt: #32221A;
+  --text: #F0E8D8; --muted: #A09080; --border: #3A2A1E;
+  --shadow: 0 2px 16px rgba(0,0,0,0.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Lora',Georgia,serif;background:var(--bg);color:var(--text);font-size:17px;line-height:1.75}
+
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:var(--nav-bg);display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-brand{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#D4952A;white-space:nowrap;padding:0 18px;display:flex;align-items:center;border-right:1px solid rgba(255,255,255,0.1);flex-shrink:0}
+.nav a{display:flex;align-items:center;padding:0 13px;font-family:system-ui,sans-serif;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(240,232,216,0.5);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:color .18s,border-color .18s;flex-shrink:0;min-height:46px}
+.nav a:hover{color:var(--nav-text)}
+.nav a.on{color:var(--nav-text);border-bottom-color:#C96842}
+
+.wrap{max-width:880px;margin:0 auto;padding-inline:24px}
+
+/* HERO */
+.hero{padding-block:64px 52px;border-bottom:1px solid var(--border)}
+.eyebrow{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5.5vw,54px);font-weight:900;line-height:1.1;text-wrap:balance;margin-bottom:18px}
+.hero-sub{font-size:18px;line-height:1.65;color:var(--muted);max-width:620px;margin-bottom:44px}
+
+/* SYSTEM DIAGRAM */
+.system-diagram{width:100%;overflow-x:auto;margin-bottom:36px}
+.system-diagram svg{min-width:700px;width:100%}
+
+.kicker-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:8px}
+.kicker-stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+.kicker-stat .num{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;line-height:1;color:var(--accent)}
+.kicker-stat .lbl{font-family:system-ui,sans-serif;font-size:12px;color:var(--muted);margin-top:5px;line-height:1.4}
+
+/* SECTIONS */
+section{padding-block:52px;border-bottom:1px solid var(--border)}
+section:last-child{border-bottom:none}
+.section-eyebrow{font-family:system-ui,sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+h2{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,34px);font-weight:700;line-height:1.2;text-wrap:balance;margin-bottom:12px}
+h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;line-height:1.25;margin-bottom:8px}
+p{margin-bottom:16px;max-width:700px}
+p:last-child{margin-bottom:0}
+
+/* COLOR TAGS BY SECTION */
+.tag-policy{color:var(--amber)}
+.tag-soil{color:var(--sage)}
+.tag-water{color:var(--blue)}
+.tag-health{color:var(--rose)}
+.tag-economic{color:var(--accent)}
+.tag-corporate{color:var(--muted)}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:28px;margin-top:28px}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:2px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:26px}
+.tl-item:last-child{margin-bottom:0}
+.tl-dot{position:absolute;left:-28px;top:5px;width:16px;height:16px;border-radius:50%;border:2px solid var(--bg);flex-shrink:0}
+.tl-year{font-family:system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;margin-bottom:3px}
+.tl-body{font-size:15px;line-height:1.6;color:var(--muted);max-width:640px}
+
+/* MAP SECTION */
+.geo-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:28px}
+@media(max-width:620px){.geo-grid{grid-template-columns:1fr}}
+.region-cards{display:flex;flex-direction:column;gap:10px}
+.region-card{padding:14px 16px;border-radius:8px;border-left:4px solid}
+.region-card.malwa{background:rgba(201,104,66,0.07);border-color:var(--accent)}
+.region-card.doaba{background:rgba(212,149,42,0.07);border-color:var(--amber)}
+.region-card.majha{background:rgba(107,152,120,0.07);border-color:var(--sage)}
+.region-card h4{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:4px}
+.region-card p{font-size:13px;color:var(--muted);margin-bottom:0;max-width:none}
+
+/* STAT BOXES */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:24px 0}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.stat-box .n{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;line-height:1;margin-bottom:4px}
+.stat-box .d{font-family:system-ui,sans-serif;font-size:12px;color:var(--muted);line-height:1.4}
+.n-accent{color:var(--accent)} .n-amber{color:var(--amber)} .n-sage{color:var(--sage)} .n-blue{color:var(--blue)} .n-rose{color:var(--rose)}
+
+/* CHART BARS */
+.bar-chart{margin:24px 0}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:14px}
+.bar-label{width:130px;flex-shrink:0;text-align:right;color:var(--muted);font-size:13px}
+.bar-track{flex:1;background:var(--surface-alt);border-radius:4px;height:22px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap;transition:width .6s}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:14px;margin-top:24px}
+.data-table th{background:var(--surface-alt);text-align:left;padding:10px 14px;font-family:system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border)}
+.data-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--surface)}
+.delay-badge{display:inline-block;background:rgba(184,104,104,0.12);color:var(--rose);border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;font-family:system-ui,sans-serif}
+
+/* CALLOUT */
+.callout{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:18px 22px;margin:24px 0;max-width:700px}
+.callout p{margin-bottom:0;max-width:none;font-size:15px;font-style:italic;color:var(--text)}
+.callout cite{display:block;margin-top:8px;font-style:normal;font-family:system-ui,sans-serif;font-size:12px;color:var(--muted)}
+
+/* CARDS GRID */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;transition:box-shadow .2s}
+.card:hover{box-shadow:var(--shadow)}
+.card-icon{font-size:28px;margin-bottom:10px}
+.card h4{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:8px}
+.card p{font-size:14px;color:var(--muted);margin-bottom:0;max-width:none;line-height:1.55}
+
+/* HEALTH SUBSECTIONS */
+.health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:24px 0}
+.health-card{padding:18px;border-radius:10px;border:1px solid var(--border)}
+.health-card.cancer{background:rgba(184,104,104,0.06);border-color:rgba(184,104,104,0.25)}
+.health-card.neuro{background:rgba(122,157,184,0.06);border-color:rgba(122,157,184,0.25)}
+.health-card.repro{background:rgba(212,149,42,0.06);border-color:rgba(212,149,42,0.25)}
+.health-card.suicide{background:rgba(107,152,120,0.06);border-color:rgba(107,152,120,0.25)}
+.health-card h4{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:6px}
+.health-card p{font-size:13px;color:var(--muted);margin-bottom:0;max-width:none;line-height:1.5}
+.health-card .badge{display:inline-block;font-family:system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-bottom:8px}
+.badge-rose{background:rgba(184,104,104,0.15);color:var(--rose)}
+.badge-blue{background:rgba(122,157,184,0.15);color:var(--blue)}
+.badge-amber{background:rgba(212,149,42,0.15);color:var(--amber)}
+.badge-sage{background:rgba(107,152,120,0.15);color:var(--sage)}
+
+/* TRAIN CALLOUT WITHIN HEALTH */
+.train-strip{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:22px 24px;margin:20px 0}
+.train-strip .train-eyebrow{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rose);margin-bottom:8px}
+.train-strip h4{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:10px}
+.train-strip p{font-size:15px;color:var(--muted);margin-bottom:0;max-width:none}
+.train-stats{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px}
+.train-stat{text-align:center}
+.train-stat .tn{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--rose)}
+.train-stat .td{font-size:11px;color:var(--muted);font-family:system-ui,sans-serif}
+
+/* INDIA MAP SECTION */
+.india-bar-section{margin:28px 0}
+.state-rank{display:flex;flex-direction:column;gap:8px}
+.sr-row{display:flex;align-items:center;gap:10px;font-size:14px}
+.sr-rank{width:24px;font-family:system-ui,sans-serif;font-weight:700;font-size:12px;color:var(--muted);flex-shrink:0;text-align:center}
+.sr-name{width:120px;flex-shrink:0;font-size:13px}
+.sr-track{flex:1;background:var(--surface-alt);border-radius:4px;height:18px;overflow:hidden}
+.sr-fill{height:100%;border-radius:4px}
+.sr-val{width:60px;text-align:right;font-family:system-ui,sans-serif;font-size:12px;font-weight:700;color:var(--muted);flex-shrink:0}
+
+/* SOLUTION CARDS */
+.solution-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px}
+.sol-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;border-top:3px solid var(--sage)}
+.sol-card h4{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:8px;color:var(--sage)}
+.sol-card p{font-size:13px;color:var(--muted);margin-bottom:0;max-width:none;line-height:1.55}
+
+/* FOOTER */
+footer{padding:40px 0;border-top:1px solid var(--border);text-align:center;font-size:13px;color:var(--muted)}
+</style>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <span class="nav-brand">Green Revolution</span>
+  <a href="#policy">Policy Trap</a>
+  <a href="#soil">Soil Death</a>
+  <a href="#water">Water Crisis</a>
+  <a href="#health">Health</a>
+  <a href="#economic">Economic Ruin</a>
+  <a href="#corporate">Corporate Failure</a>
+  <a href="#forward">Way Forward</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div class="eyebrow">India's Green Revolution · 1966–2026</div>
+    <h1>Six Decades of Plenty,<br>Six Crises of Ruin</h1>
+    <p class="hero-sub">India's Green Revolution fed a nation and won global acclaim — but beneath the yield records lies an interlocking web of policy traps, ecological collapse, and human suffering that spans every state touched by industrial agriculture.</p>
+
+    <!-- SYSTEM DIAGRAM -->
+    <div class="system-diagram">
+      <svg viewBox="0 0 760 340" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System diagram showing how policy trap leads to soil death, water crisis, and chemical treadmill, which together cause cancer and health harms, economic ruin, and farmer suicides">
+        <!-- Background panels -->
+        <rect x="0" y="0" width="760" height="340" fill="none"/>
+
+        <!-- ROOT CAUSE box -->
+        <rect x="270" y="12" width="220" height="60" rx="10" fill="#C96842" fill-opacity="0.12" stroke="#C96842" stroke-width="1.5"/>
+        <text x="380" y="36" font-family="Georgia,serif" font-size="12" font-weight="700" fill="#C96842" text-anchor="middle">ROOT CAUSE</text>
+        <text x="380" y="53" font-family="Georgia,serif" font-size="11" fill="#2A1E14" text-anchor="middle">Policy Trap: MSP + Subsidies</text>
+        <text x="380" y="66" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">monoculture lock-in · chemical dependency</text>
+
+        <!-- Arrow down from root -->
+        <line x1="380" y1="72" x2="380" y2="106" stroke="#C96842" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <polygon points="376,106 380,114 384,106" fill="#C96842"/>
+
+        <!-- THREE MIDDLE boxes -->
+        <!-- Soil Death -->
+        <rect x="30" y="118" width="188" height="58" rx="8" fill="#6B9878" fill-opacity="0.1" stroke="#6B9878" stroke-width="1.5"/>
+        <text x="124" y="140" font-family="Georgia,serif" font-size="11" font-weight="700" fill="#6B9878" text-anchor="middle">Soil Death</text>
+        <text x="124" y="155" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">organic carbon collapse</text>
+        <text x="124" y="168" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">biodiversity loss · 90% soils depleted</text>
+
+        <!-- Chemical Treadmill (center) -->
+        <rect x="286" y="118" width="188" height="58" rx="8" fill="#D4952A" fill-opacity="0.1" stroke="#D4952A" stroke-width="1.5"/>
+        <text x="380" y="140" font-family="Georgia,serif" font-size="11" font-weight="700" fill="#D4952A" text-anchor="middle">Chemical Treadmill</text>
+        <text x="380" y="155" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">pesticide use ↑570× since 1953</text>
+        <text x="380" y="168" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">fertiliser efficiency −80%</text>
+
+        <!-- Water Crisis -->
+        <rect x="542" y="118" width="188" height="58" rx="8" fill="#7A9DB8" fill-opacity="0.1" stroke="#7A9DB8" stroke-width="1.5"/>
+        <text x="636" y="140" font-family="Georgia,serif" font-size="11" font-weight="700" fill="#7A9DB8" text-anchor="middle">Water Crisis</text>
+        <text x="636" y="155" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">62.5% groundwater uranium-toxic</text>
+        <text x="636" y="168" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">arsenic, DDT, heavy metals</text>
+
+        <!-- Arrows from root to three middle boxes -->
+        <!-- to Soil -->
+        <line x1="320" y1="82" x2="140" y2="118" stroke="#C96842" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+        <!-- to Water -->
+        <line x1="440" y1="82" x2="620" y2="118" stroke="#C96842" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+
+        <!-- Cross arrows between middle boxes -->
+        <line x1="218" y1="147" x2="286" y2="147" stroke="#7A6458" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+        <polygon points="282,144 290,147 282,150" fill="#7A6458" opacity="0.5"/>
+        <line x1="474" y1="147" x2="542" y2="147" stroke="#7A6458" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+        <polygon points="538,144 546,147 538,150" fill="#7A6458" opacity="0.5"/>
+
+        <!-- Arrows down from middle to bottom -->
+        <line x1="200" y1="176" x2="220" y2="208" stroke="#7A6458" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+        <line x1="380" y1="176" x2="380" y2="208" stroke="#7A6458" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+        <line x1="560" y1="176" x2="540" y2="208" stroke="#7A6458" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+
+        <!-- BOTTOM THREE CONSEQUENCE boxes -->
+        <!-- Health Catastrophe -->
+        <rect x="30" y="210" width="205" height="100" rx="8" fill="#B86868" fill-opacity="0.09" stroke="#B86868" stroke-width="1.5"/>
+        <text x="133" y="232" font-family="Georgia,serif" font-size="11" font-weight="700" fill="#B86868" text-anchor="middle">Health Catastrophe</text>
+        <text x="133" y="248" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">cancer belt · Cancer Train</text>
+        <text x="133" y="262" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">neurological disorders</text>
+        <text x="133" y="276" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">birth defects · reproductive harm</text>
+        <text x="133" y="290" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">Punjab: 1,089/million vs 800 national</text>
+        <text x="133" y="304" font-family="Georgia,serif" font-size="10" fill="#B86868" text-anchor="middle" font-style="italic">↑ Cancer Train is one symptom</text>
+
+        <!-- Economic Ruin (center bottom) -->
+        <rect x="278" y="210" width="204" height="100" rx="8" fill="#C96842" fill-opacity="0.09" stroke="#C96842" stroke-width="1.5"/>
+        <text x="380" y="232" font-family="Georgia,serif" font-size="11" font-weight="700" fill="#C96842" text-anchor="middle">Economic Ruin</text>
+        <text x="380" y="248" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">3,300+ farmer suicides (2000–19)</text>
+        <text x="380" y="262" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">average debt: ₹8–12 lakh/family</text>
+        <text x="380" y="276" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">treatment cost: ₹7.1 lakh/cancer case</text>
+        <text x="380" y="290" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">village collapse · youth migration</text>
+        <text x="380" y="304" font-family="Georgia,serif" font-size="10" fill="#C96842" text-anchor="middle" font-style="italic">61.6% face catastrophic expenditure</text>
+
+        <!-- Regulatory Failure (right bottom) -->
+        <rect x="526" y="210" width="204" height="100" rx="8" fill="#D4952A" fill-opacity="0.09" stroke="#D4952A" stroke-width="1.5"/>
+        <text x="628" y="232" font-family="Georgia,serif" font-size="11" font-weight="700" fill="#D4952A" text-anchor="middle">Regulatory Failure</text>
+        <text x="628" y="248" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">DDT banned 39+ yrs after EU</text>
+        <text x="628" y="262" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">Insecticides Act 1968 — never reformed</text>
+        <text x="628" y="276" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">4 reform bills failed (2008–2025)</text>
+        <text x="628" y="290" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">pesticide companies lobby actively</text>
+        <text x="628" y="304" font-family="Georgia,serif" font-size="10" fill="#D4952A" text-anchor="middle" font-style="italic">Bayer 11% · Syngenta 7% · UPL 7%</text>
+      </svg>
+    </div>
+
+    <div class="kicker-stats">
+      <div class="kicker-stat">
+        <div class="num">570×</div>
+        <div class="lbl">Increase in pesticide use since 1953</div>
+      </div>
+      <div class="kicker-stat">
+        <div class="num">62.5%</div>
+        <div class="lbl">Punjab groundwater uranium-contaminated</div>
+      </div>
+      <div class="kicker-stat">
+        <div class="num">3,300+</div>
+        <div class="lbl">Farmer suicides in Punjab 2000–2019</div>
+      </div>
+      <div class="kicker-stat">
+        <div class="num">39 yrs</div>
+        <div class="lbl">India lagged the EU in banning DDT</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 1. POLICY TRAP -->
+<section id="policy">
+  <div class="wrap">
+    <div class="section-eyebrow tag-policy">Crisis 1 · Root Cause</div>
+    <h2>The Policy Trap</h2>
+    <p>The Green Revolution was an emergency measure that became a permanent cage. Launched in crisis — India faced famine and dependence on US PL-480 "ship-to-mouth" aid — Borlaug's high-yielding wheat varieties and Swaminathan's implementation delivered a genuine miracle. But the policy architecture built around that miracle locked farmers into an ever-deepening dependency.</p>
+    <p>Minimum Support Prices rewarded only wheat and rice. Fertiliser subsidies made chemical inputs cheaper than soil restoration. Electricity subsidies encouraged groundwater extraction at any depth. The result: farmers who wanted to grow anything else — lentils, oilseeds, vegetables — faced a structural penalty. By 1985, Punjab grew wheat and rice almost exclusively.</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#D4952A"></div>
+        <div class="tl-year" style="color:#D4952A">1947–65 · Pre-Revolution</div>
+        <div class="tl-body">Pesticide use: 154 metric tonnes. India imports 10 million tonnes of grain annually. "Ship-to-mouth" dependency. B.P. Pal introduces Lerma Rojo wheat variety.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#C96842"></div>
+        <div class="tl-year" style="color:#C96842">1966–68 · The Revolution</div>
+        <div class="tl-body">Borlaug's HYV wheat introduced. Punjab and Haryana adopted first. Production explodes: wheat output triples by 1972. India declares food self-sufficiency. Swaminathan and Borlaug win awards — but Swaminathan privately warns of ecological recklessness.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#B86868"></div>
+        <div class="tl-year" style="color:#B86868">1970s · The Lock-In</div>
+        <div class="tl-body">MSP framework formalised. Fertiliser subsidy regime creates input dependency. Rice added to the wheat-only Green Revolution. Punjab water table begins dropping — 1 metre/year by 1975. Pesticide use reaches 10,000 MT.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#7A9DB8"></div>
+        <div class="tl-year" style="color:#7A9DB8">1980–2000 · The Treadmill</div>
+        <div class="tl-body">Pest resistance emerges; farmers spray more to get the same effect. Pesticide use peaks at ~88,000 MT (1994–2000). Punjab uses 923 g/ha — highest in India. Fertiliser efficiency collapses from 50 kg grain/kg NPK to under 10 kg. First cancer clusters reported in Malwa.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#6B9878"></div>
+        <div class="tl-year" style="color:#6B9878">2000–2025 · The Reckoning</div>
+        <div class="tl-body">Cancer Train documented. BARC identifies uranium in Punjab groundwater. 3,300 farmer suicides recorded. Water table at 300 metres in places. Four pesticide reform bills fail in Parliament. India's national cancer burden rises; Punjab ranks 5th in absolute cases, 3rd in mortality.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p>"The green revolution has been a miserable failure from the social and economic standpoint... we are rapidly approaching the end of the era of the green revolution."</p>
+      <cite>— M.S. Swaminathan, 1968 internal note (declassified 1990s)</cite>
+    </div>
+  </div>
+</section>
+
+<!-- 2. SOIL DEATH -->
+<section id="soil">
+  <div class="wrap">
+    <div class="section-eyebrow tag-soil">Crisis 2 · Ecological</div>
+    <h2>The Death of the Soil</h2>
+    <p>Green Revolution monocultures extracted nutrients at a pace soil biology cannot replenish. Continuous wheat-rice cycles eliminated the legume rotations that fixed nitrogen naturally. Chemical fertilisers fed crops but starved soil microbiomes. Within two decades of intensive cultivation, Punjab's soils began dying from the inside.</p>
+
+    <div class="stat-row">
+      <div class="stat-box"><div class="n n-sage">90%</div><div class="d">Punjab soils organic-carbon deficient (below 0.5%)</div></div>
+      <div class="stat-box"><div class="n n-amber">247</div><div class="d">kg/ha fertiliser use in Punjab vs 140 kg/ha national average</div></div>
+      <div class="stat-box"><div class="n n-sage">−80%</div><div class="d">Fertiliser efficiency loss: 50 kg grain/kg NPK → under 10 kg</div></div>
+      <div class="stat-box"><div class="n n-accent">65%</div><div class="d">Decline in earthworm populations in intensively cultivated Punjab tracts</div></div>
+    </div>
+
+    <p>The micronutrient collapse has made food less nutritious even as it made it more abundant. Zinc deficiency now affects paddy yields; sulfur deficiency is endemic. Farmers apply more fertiliser each season simply to maintain yields that no longer respond — the classic input treadmill.</p>
+    <p>In 2015, soil scientists from PAU (Punjab Agricultural University) estimated that restoring Punjab's organic carbon levels to the 1966 baseline would require abandoning monocultures for at least fifteen years — a transition no farmer dependent on MSP-priced wheat and rice can afford.</p>
+
+    <h3 style="margin-top:28px">Biodiversity Lost</h3>
+    <p>Before 1966, Punjab supported 300+ traditional wheat varieties, each adapted to local microclimates. By 1990, three HYV varieties covered 95% of cultivated area. The genetic bottleneck left the crop uniquely vulnerable to new rust strains — prompting yet more fungicide use. The wild relatives of wheat that once served as gene banks were ploughed under.</p>
+  </div>
+</section>
+
+<!-- 3. WATER CRISIS -->
+<section id="water">
+  <div class="wrap">
+    <div class="section-eyebrow tag-water">Crisis 3 · Hydrological</div>
+    <h2>The Poisoned Aquifer</h2>
+    <p>Punjab's water emergency has two dimensions: quantity and quality. On quantity, paddy cultivation requires 1,200–1,500 mm of water per season in a state receiving 600–700 mm of rainfall — the difference comes entirely from groundwater. On quality, decades of agrochemical application have turned that groundwater into a toxic cocktail.</p>
+
+    <div class="stat-row">
+      <div class="stat-box"><div class="n n-blue">62.5%</div><div class="d">Punjab groundwater samples exceed 30 ppb uranium (BARC 2009)</div></div>
+      <div class="stat-box"><div class="n n-blue">200+</div><div class="d">ppb uranium in Sangrur and Bathinda districts (vs 30 ppb WHO limit)</div></div>
+      <div class="stat-box"><div class="n n-blue">300m</div><div class="d">Depth of water table in parts of Malwa — down from 10m in 1966</div></div>
+      <div class="stat-box"><div class="n n-blue">93%</div><div class="d">Ghaggar River samples exceed WHO DDT limits</div></div>
+    </div>
+
+    <p>The uranium contamination is linked not to industrial discharge but to phosphate fertilisers — a direct consequence of Green Revolution inputs. Phosphate rock naturally contains uranium; when dissolved by soil acids and concentrated in groundwater by evapotranspiration, it creates a slow radiological poison that no filtration system in rural Punjab removes.</p>
+    <p>On the Sutlej river, PGIMER studies found elevated cadmium, lead, and mercury — heavy metals from agrochemical manufacturing effluents and pesticide residues. The Ghaggar carries DDT and HCH (hexachlorocyclohexane) at 90%+ above WHO thresholds. These rivers irrigate the fields that feed the rest of India.</p>
+
+    <h3 style="margin-top:28px">A Nationwide Water Emergency</h3>
+    <p>Punjab is the extreme case, but the pattern repeats across Green Revolution states. Haryana's groundwater is critically overexploited in 80% of assessed blocks. Western UP and coastal Andhra Pradesh show similar agrochemical contamination profiles. NITI Aayog's 2018 Composite Water Management Index ranked these states in the highest-stress bracket.</p>
+
+    <div class="callout" style="border-left-color:var(--blue)">
+      <p>India extracts more groundwater annually than the United States and China combined — largely to sustain paddy cultivation in water-scarce states. The Green Revolution transferred production to where water was, then mined it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. HEALTH CATASTROPHE -->
+<section id="health">
+  <div class="wrap">
+    <div class="section-eyebrow tag-health">Crisis 4 · Human Health</div>
+    <h2>The Health Catastrophe</h2>
+    <p>The health burden of Green Revolution chemicalisation is not limited to cancer — though cancer is the crisis most visible to the outside world. Neurological disorders, birth defects, hormonal disruption, and reproductive harm are documented across pesticide-intensive farming communities. Cancer is the signal, but the damage is systemic.</p>
+
+    <div class="health-grid">
+      <div class="health-card cancer">
+        <div class="badge badge-rose">Cancer</div>
+        <h4>The Cancer Belt</h4>
+        <p>Malwa region: 1,089 cancer cases/million vs national 800/million. Punjab ranks 5th in absolute cancer cases nationally and 3rd in cancer mortality. PGIMER studies find 125 cancer cases/100,000 in pesticide-heavy blocks vs 72/100,000 in comparison areas.</p>
+      </div>
+      <div class="health-card neuro">
+        <div class="badge badge-blue">Neurological</div>
+        <h4>Neurological Harm</h4>
+        <p>Organophosphate pesticides inhibit acetylcholinesterase — the enzyme regulating nerve signals. Chronic low-dose exposure linked to Parkinson's disease, cognitive decline, and depression. Punjab and Haryana report elevated rates; farmers handling monocrotophos and chlorpyrifos show measurable neurological impairment.</p>
+      </div>
+      <div class="health-card repro">
+        <div class="badge badge-amber">Reproductive</div>
+        <h4>Birth Defects & Hormonal Disruption</h4>
+        <p>Endocrine-disrupting pesticides mimic oestrogen. Studies in Malwa link pesticide exposure to early puberty, increased spontaneous abortions, and birth defects. A 2025 study found 6.7× higher ovarian cancer odds in women with high organophosphate exposure.</p>
+      </div>
+      <div class="health-card suicide">
+        <div class="badge badge-sage">Mental Health</div>
+        <h4>Pesticide Poisoning & Suicide</h4>
+        <p>India accounts for 6,600 of 11,000 global annual accidental pesticide deaths. Intentional poisoning is the leading suicide method among farmers. In Malwa, organophosphate poisoning is so common that local hospitals stock atropine as a routine emergency supply.</p>
+      </div>
+    </div>
+
+    <!-- CANCER TRAIN as an element within health -->
+    <div class="train-strip">
+      <div class="train-eyebrow">One Symptom Among Many</div>
+      <h4>The Cancer Train (Train No. 14796/97)</h4>
+      <p>Every night at 9:30 PM, a train departs Bathinda railway station for Bikaner in Rajasthan — carrying roughly 100 cancer patients and their caregivers to the Acharya Tulsi Regional Cancer Treatment and Research Institute, one of the few facilities that provides subsidised treatment. The train became a symbol after journalist Aman Sethi documented it in 2008. But the train is not the crisis — it is a coping mechanism. The crisis is in the fields, the water, and the policy architecture that created it.</p>
+      <div class="train-stats">
+        <div class="train-stat"><div class="tn">~100</div><div class="td">Cancer patients per trip</div></div>
+        <div class="train-stat"><div class="tn">~300</div><div class="td">Total passengers/trip<br>(incl. caregivers)</div></div>
+        <div class="train-stat"><div class="tn">₹7.1L</div><div class="td">Avg. treatment cost<br>per cancer patient</div></div>
+        <div class="train-stat"><div class="tn">61.6%</div><div class="td">Families face catastrophic<br>health expenditure</div></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:28px">India-Wide Cancer Burden</h3>
+    <p>Punjab's cancer belt is the most-documented case, but the national pattern shows that agricultural chemicalisation tracks with cancer burden across states.</p>
+
+    <div class="india-bar-section">
+      <div style="font-family:system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Cancer Incidence by State (per lakh population)</div>
+      <div class="state-rank">
+        <div class="sr-row"><div class="sr-rank">1</div><div class="sr-name">Kerala</div><div class="sr-track"><div class="sr-fill" style="width:100%;background:#B86868;height:100%"></div></div><div class="sr-val">166/lakh</div></div>
+        <div class="sr-row"><div class="sr-rank">2</div><div class="sr-name">Mizoram</div><div class="sr-track"><div class="sr-fill" style="width:90%;background:#C96842;height:100%"></div></div><div class="sr-val">150/lakh</div></div>
+        <div class="sr-row"><div class="sr-rank">3</div><div class="sr-name">Delhi</div><div class="sr-track"><div class="sr-fill" style="width:68%;background:#D4952A;height:100%"></div></div><div class="sr-val">113/lakh</div></div>
+        <div class="sr-row"><div class="sr-rank">4</div><div class="sr-name">Karnataka</div><div class="sr-track"><div class="sr-fill" style="width:63%;background:#D4A060;height:100%"></div></div><div class="sr-val">105/lakh</div></div>
+        <div class="sr-row"><div class="sr-rank">5</div><div class="sr-name">Punjab</div><div class="sr-track"><div class="sr-fill" style="width:60%;background:#B86868;height:100%"></div></div><div class="sr-val">100/lakh</div></div>
+        <div class="sr-row"><div class="sr-rank">—</div><div class="sr-name">National avg</div><div class="sr-track"><div class="sr-fill" style="width:48%;background:#7A9DB8;height:100%;opacity:0.7"></div></div><div class="sr-val">80/lakh</div></div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px;max-width:none">Note: Punjab's Malwa belt reaches 1,089/million (~109/lakh), above the state average — the state figure masks local extremes. National cancer deaths rose from 52/lakh (2001) to 59/lakh (2019).</p>
+    </div>
+
+    <div class="bar-chart">
+      <div style="font-family:system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Top Pesticide-Consuming States (% of national use)</div>
+      <div class="bar-row"><div class="bar-label">Maharashtra</div><div class="bar-track"><div class="bar-fill" style="width:18%;background:#C96842">18%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Uttar Pradesh</div><div class="bar-track"><div class="bar-fill" style="width:14%;background:#D4952A">14%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Punjab</div><div class="bar-track"><div class="bar-fill" style="width:13%;background:#B86868">13%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Andhra Pradesh</div><div class="bar-track"><div class="bar-fill" style="width:12%;background:#C96842">12%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Haryana</div><div class="bar-track"><div class="bar-fill" style="width:10%;background:#D4952A">10%</div></div></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px">5 states account for ~67% of India's pesticide use</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. ECONOMIC RUIN -->
+<section id="economic">
+  <div class="wrap">
+    <div class="section-eyebrow tag-economic">Crisis 5 · Economic</div>
+    <h2>Economic Ruin and the Farmer Suicide Crisis</h2>
+    <p>The Green Revolution created two kinds of poverty in Punjab. The first is the debt trap: input costs for seeds, fertilisers, and pesticides now routinely exceed farm revenues in bad years, forcing farmers to borrow at usurious rates from informal lenders. The second is the health bankruptcy: a single cancer diagnosis can consume a family's accumulated wealth and leave it destitute.</p>
+
+    <div class="stat-row">
+      <div class="stat-box"><div class="n n-accent">3,300+</div><div class="d">Farmer suicides in Punjab 2000–2019; 97% in the Malwa belt</div></div>
+      <div class="stat-box"><div class="n n-amber">₹8–12L</div><div class="d">Average farm debt per family in high-distress Malwa villages</div></div>
+      <div class="stat-box"><div class="n n-rose">₹7.1L</div><div class="d">Mean cancer treatment cost (PGIMER study, Talwandi Sabo)</div></div>
+      <div class="stat-box"><div class="n n-accent">61.6%</div><div class="d">Cancer-affected families experiencing catastrophic health expenditure</div></div>
+    </div>
+
+    <p>Jajjal village in Bathinda district recorded roughly 55 cancer deaths over eleven years in a population of a few hundred families — a cluster so stark it attracted national attention. Widows in these villages describe a sequence: husband sprays pesticides for twenty years, develops cancer, treatment costs exhaust savings and land, family sells livestock and jewellery, husband dies, widow inherits debt and farmland she cannot cultivate alone.</p>
+
+    <div class="callout" style="border-left-color:var(--accent)">
+      <p>"In our village, every family has either a cancer patient or a farm suicide. We cannot afford to treat, and we cannot afford to stop farming. There is no choice left."</p>
+      <cite>— A farmer's widow in Bathinda district, interviewed by Kheti Virasat Mission field workers, 2019</cite>
+    </div>
+
+    <h3 style="margin-top:28px">The Youth Exodus</h3>
+    <p>Punjab's youth migration crisis — the state has the highest per capita emigration rate in India — is directly linked to agricultural despair. Young men who grew up watching their fathers die in cancer wards or from suicide have little appetite for farming. The paradox: as Punjab loses its farming generation, the fields that remain are tilled by increasingly older farmers who continue the same input-intensive practices because no transition support exists.</p>
+  </div>
+</section>
+
+<!-- 6. CORPORATE & REGULATORY -->
+<section id="corporate">
+  <div class="wrap">
+    <div class="section-eyebrow tag-corporate">Crisis 6 · Governance</div>
+    <h2>Corporate Capture and Regulatory Failure</h2>
+    <p>Behind the chemical treadmill is an industry that profits from it and a regulatory system that has not been meaningfully updated in over fifty years. The Insecticides Act 1968 — enacted the year after the Green Revolution took hold — remains the primary law governing pesticides. Four reform bills (2008, 2017, 2020, 2025) have failed in Parliament. The pesticide industry accounts for over 50% of India's agri-export revenue, giving it structural leverage over both the Ministry of Agriculture and the Ministry of Commerce.</p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🌿</div>
+        <h4>Bayer (CropScience)</h4>
+        <p>11% market share in India. Continues selling monocrotophos — banned in 63 countries — to Indian farmers. Labelling in Hindi only, ECCHR complaint filed 2020 on language access and hazard warnings.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌾</div>
+        <h4>Syngenta</h4>
+        <p>7% market share. Manufactures paraquat (linked to Parkinson's disease), banned in EU since 2007, still available in India as of 2024. Active in lobbying against the 2025 Pesticide Management Bill.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏭</div>
+        <h4>UPL (United Phosphorus)</h4>
+        <p>7% market share; India's largest domestic agrochemical company. Manufactures endosulfan — subject of a 35-year ban delay in India relative to the EU. PMFAI (industry lobby) regularly cites UPL export data as argument against domestic bans.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px">The Ban Gap: India vs EU</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Pesticide</th>
+          <th>EU Ban Year</th>
+          <th>India Status</th>
+          <th>Delay</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>DDT</td>
+          <td>1984</td>
+          <td>Partially restricted 2023</td>
+          <td><span class="delay-badge">39+ years</span></td>
+        </tr>
+        <tr>
+          <td>Endosulfan</td>
+          <td>1986</td>
+          <td>Phased out 2011–2012</td>
+          <td><span class="delay-badge">25–26 years</span></td>
+        </tr>
+        <tr>
+          <td>Monocrotophos</td>
+          <td>1992</td>
+          <td>Still in use (cotton only restricted)</td>
+          <td><span class="delay-badge">31+ years</span></td>
+        </tr>
+        <tr>
+          <td>Methyl Parathion</td>
+          <td>2003</td>
+          <td>Banned 2018</td>
+          <td><span class="delay-badge">15 years</span></td>
+        </tr>
+        <tr>
+          <td>Paraquat</td>
+          <td>2007</td>
+          <td>Still registered</td>
+          <td><span class="delay-badge">17+ years</span></td>
+        </tr>
+        <tr>
+          <td>Chlorpyrifos</td>
+          <td>2020</td>
+          <td>Under review</td>
+          <td><span class="delay-badge">4+ years</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout" style="border-left-color:var(--amber);margin-top:28px">
+      <p>"The pesticide industry contributes over 50% of India's agricultural export revenue. Any hasty bans will destroy the livelihoods of lakhs of farmers and workers."</p>
+      <cite>— PMFAI (Pesticide Manufacturers and Formulators Association of India) submission to Parliament, 2020</cite>
+    </div>
+  </div>
+</section>
+
+<!-- 7. WAY FORWARD -->
+<section id="forward">
+  <div class="wrap">
+    <div class="section-eyebrow tag-soil">Way Forward</div>
+    <h2>Breaking the Treadmill</h2>
+    <p>There is no single fix. The crises documented here are systemic — they require changes at the policy, regulatory, community, and knowledge levels simultaneously. But evidence-based models already exist and are working at scale in several Indian states.</p>
+
+    <div class="solution-grid">
+      <div class="sol-card">
+        <h4>Reform the MSP Architecture</h4>
+        <p>Extend MSP support to pulses, oilseeds, and vegetables — rewarding crop diversity rather than monocultures. The Swaminathan Commission recommended this in 2004; it has not been implemented.</p>
+      </div>
+      <div class="sol-card">
+        <h4>Zero-Budget Natural Farming</h4>
+        <p>Andhra Pradesh's ZBNF programme reached 700,000+ farmers by 2022, reducing pesticide costs by 35% while maintaining yields. Subhash Palekar's model uses local cow-dung bio-inputs, eliminating external chemical inputs entirely.</p>
+      </div>
+      <div class="sol-card">
+        <h4>Modernise the Insecticides Act</h4>
+        <p>Pass the long-delayed Pesticide Management Bill. Adopt EU hazard classification standards. Mandate multilingual labelling in all states. Establish an independent toxicological review board free from industry nominees.</p>
+      </div>
+      <div class="sol-card">
+        <h4>Soil Carbon Restoration</h4>
+        <p>PAU's Living Soil programme targets organic carbon restoration through green manuring, biochar, and reduced tillage. Government incentives currently favour synthetic fertiliser over soil-building — reversing this subsidy structure is the critical first step.</p>
+      </div>
+      <div class="sol-card">
+        <h4>Kheti Virasat Mission</h4>
+        <p>Umendra Dutt's KVM has transitioned 30,000+ Punjab farmers to natural farming. The model integrates soil health, water conservation, and community savings to break the debt-input cycle simultaneously.</p>
+      </div>
+      <div class="sol-card">
+        <h4>Universal Cancer Coverage</h4>
+        <p>AAP's Punjab Cancer Relief Fund covered 23,711 patients with ₹305+ crore in 2022–23. But downstream relief cannot substitute for upstream prevention. Without addressing the chemical causes, the treatment burden will grow faster than relief budgets can cover.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:32px">The Green Revolution is not the past — it is the present. Punjab's farmers are still trapped in the same policy architecture, still spraying the same chemicals, still watching water tables drop. The Cancer Train still departs at 9:30 PM. What has changed is that the evidence is now overwhelming, the alternatives are proven, and the question is purely one of political will.</p>
+  </div>
+</section>
+
+<!-- GEOGRAPHY APPENDIX -->
+<section id="geography" style="padding-top:40px">
+  <div class="wrap">
+    <div class="section-eyebrow tag-water">Geography · Punjab</div>
+    <h2>The Three Regions of Punjab</h2>
+    <p>Punjab's cancer burden is not uniform. The state divides into three ecological and cultural zones, each with a different relationship to the Green Revolution's inputs and harms.</p>
+    <div class="geo-grid">
+      <div>
+        <svg viewBox="0 0 340 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Simplified Punjab map with three regions -->
+          <!-- MALWA (south) -->
+          <path d="M80,220 L180,200 L280,210 L300,280 L260,340 L180,360 L100,340 L70,290 Z" fill="#C96842" fill-opacity="0.2" stroke="#C96842" stroke-width="2"/>
+          <text x="185" y="280" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#C96842" text-anchor="middle">MALWA</text>
+          <text x="185" y="296" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">Cancer Belt</text>
+          <text x="185" y="310" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">1,089/million</text>
+          <!-- DOABA (east centre) -->
+          <path d="M200,100 L270,90 L310,140 L290,200 L210,200 L190,150 Z" fill="#D4952A" fill-opacity="0.2" stroke="#D4952A" stroke-width="2"/>
+          <text x="255" y="158" font-family="Georgia,serif" font-size="12" font-weight="700" fill="#D4952A" text-anchor="middle">DOABA</text>
+          <text x="255" y="172" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">Moderate risk</text>
+          <!-- MAJHA (north) -->
+          <path d="M60,60 L190,50 L210,100 L190,150 L80,140 L50,100 Z" fill="#6B9878" fill-opacity="0.2" stroke="#6B9878" stroke-width="2"/>
+          <text x="130" y="105" font-family="Georgia,serif" font-size="12" font-weight="700" fill="#6B9878" text-anchor="middle">MAJHA</text>
+          <text x="130" y="119" font-family="Georgia,serif" font-size="10" fill="#7A6458" text-anchor="middle">Lower incidence</text>
+          <!-- Cancer train route line -->
+          <line x1="170" y1="290" x2="30" y2="390" stroke="#B86868" stroke-width="2" stroke-dasharray="6,4"/>
+          <circle cx="170" cy="290" r="5" fill="#B86868"/>
+          <text x="30" y="385" font-family="system-ui,sans-serif" font-size="9" fill="#B86868">→ Bikaner (Cancer Train)</text>
+          <!-- Labels -->
+          <text x="170" y="305" font-family="system-ui,sans-serif" font-size="9" fill="#B86868" text-anchor="middle">Bathinda</text>
+          <!-- Border label -->
+          <text x="170" y="20" font-family="Georgia,serif" font-size="12" fill="#7A6458" text-anchor="middle">Punjab — Three Regions</text>
+        </svg>
+      </div>
+      <div class="region-cards">
+        <div class="region-card malwa">
+          <h4>Malwa — The Cancer Belt</h4>
+          <p>Southern Punjab, formerly forested. Highest pesticide use in state. Cotton-growing zone where endosulfan, monocrotophos and DDT were applied most heavily. Home to Bathinda and Sangrur — districts with documented uranium contamination. Cancer rate: 1,089/million vs national 800/million.</p>
+        </div>
+        <div class="region-card doaba">
+          <h4>Doaba — The Transition Zone</h4>
+          <p>Central belt between the Beas and Sutlej rivers. Moderate cancer incidence. Significant pesticide use but more vegetable cultivation has preserved some agrobiodiversity. Heavy NRI remittances fund farm inputs — paradoxically intensifying chemical use.</p>
+        </div>
+        <div class="region-card majha">
+          <h4>Majha — The Buffer Zone</h4>
+          <p>Northern Punjab, bordering Pakistan. Lower cancer rates but facing the same groundwater depletion crisis. Wheat and rice monocultures dominate. Less industrial pesticide history due to cooler temperatures reducing pest pressure, but soil degradation equally severe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Sources: BARC (2009), PGIMER Talwandi Sabo study, Punjab Pollution Control Board, NITI Aayog Composite Water Management Index, Kheti Virasat Mission, WHO Pesticide Data Portal, ECCHR complaint on pesticide labelling (2020), National Cancer Registry Programme, Census of India. Research compiled 2025.</p>
+  </div>
+</footer>
+
+<script>
+const sections = ['hero','policy','soil','water','health','economic','corporate','forward'];
+const links = document.querySelectorAll('.nav a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      links.forEach(l => l.classList.toggle('on', l.getAttribute('href') === '#' + id));
+    }
+  });
+}, {rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(id => { const el = document.getElementById(id); if(el) obs.observe(el); });
+</script>
